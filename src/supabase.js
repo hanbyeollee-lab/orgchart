@@ -36,12 +36,27 @@ export async function uploadPdf(file, uploadedBy) {
   return meta;
 }
 
-export async function getPdfMeta() {
-  const { data, error } = await supabase.storage
-    .from(BUCKET)
-    .download(META_PATH);
-  if (error) return null;
-  return JSON.parse(await data.text());
+export async function getPdfMeta(retries = 3) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const { data, error } = await supabase.storage
+        .from(BUCKET)
+        .download(META_PATH);
+      if (error) {
+        if (i === retries - 1) return null;
+        await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+        continue;
+      }
+      const meta = JSON.parse(await data.text());
+      // Add cache-busting timestamp to URL
+      meta.url = `${meta.url}?t=${Date.now()}`;
+      return meta;
+    } catch (err) {
+      if (i === retries - 1) return null;
+      await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+    }
+  }
+  return null;
 }
 
 export async function deletePdf() {
