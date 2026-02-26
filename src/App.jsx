@@ -183,11 +183,23 @@ export default function App() {
             불러오는 중...
           </div>
         ) : pdfData ? (
-          <iframe
-            src={pdfData.url + "#toolbar=0&navpanes=0&scrollbar=1"}
-            style={{ flex: 1, width: "100%", border: "none" }}
-            title="조직도"
-          />
+          <div style={{ flex: 1, position: "relative" }}
+            onContextMenu={e => e.preventDefault()}>
+            <iframe
+              src={pdfData.url + "#toolbar=0&navpanes=0&scrollbar=1&view=FitH"}
+              style={{ width: "100%", height: "100%", border: "none" }}
+              title="조직도"
+              sandbox="allow-same-origin allow-scripts"
+            />
+            {/* 우클릭/드래그 방지 오버레이 */}
+            <div style={{
+              position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
+              background: "transparent", pointerEvents: "auto",
+            }}
+              onContextMenu={e => e.preventDefault()}
+              onDragStart={e => e.preventDefault()}
+            />
+          </div>
         ) : (
           <div style={{
             flex: 1, display: "flex", alignItems: "center", justifyContent: "center",

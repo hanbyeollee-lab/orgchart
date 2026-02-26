@@ -10,18 +10,15 @@ const FILE_PATH = "current.pdf";
 const META_PATH = "meta.json";
 
 export async function uploadPdf(file, uploadedBy) {
-  // PDF 업로드
   const { error: uploadError } = await supabase.storage
     .from(BUCKET)
     .upload(FILE_PATH, file, { upsert: true, contentType: "application/pdf" });
   if (uploadError) throw uploadError;
 
-  // 공개 URL 가져오기
   const { data: { publicUrl } } = supabase.storage
     .from(BUCKET)
     .getPublicUrl(FILE_PATH);
 
-  // 메타데이터 저장
   const meta = {
     name: file.name,
     uploadedBy,
