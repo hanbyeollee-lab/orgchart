@@ -1,0 +1,625 @@
+/* ============================================
+   App Layout
+   ============================================ */
+
+.app-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.app-header {
+  background: #191919;
+  color: #fff;
+  padding: 14px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-logo {
+  height: 24px;
+  width: auto;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.internal-badge {
+  background: rgba(255,255,255,0.1);
+  color: #A3A3A3;
+  font-size: 11px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  padding: 24px;
+  background: #F5F5F5;
+}
+
+.app-footer {
+  text-align: center;
+  padding: 12px 0;
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+  background: #191919;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   Loading / Empty States
+   ============================================ */
+
+.loading-state,
+.empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #737373;
+  gap: 16px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #E5E5E5;
+  border-top-color: #191919;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   OrgChart Component
+   ============================================ */
+
+.org-chart {
+  max-width: 100%;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.org-chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.org-chart-stats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #737373;
+  font-weight: 500;
+}
+
+.stats-divider {
+  color: #D4D4D4;
+}
+
+.org-chart-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 16px;
+  color: #737373;
+}
+
+/* ============================================
+   Breadcrumb Navigation
+   ============================================ */
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 24px;
+  padding: 12px 16px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #E5E5E5;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.breadcrumb-sep {
+  color: #A3A3A3;
+  font-size: 14px;
+  margin: 0 4px;
+}
+
+.breadcrumb-item button {
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: #525252;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+.breadcrumb-item button:hover {
+  background: #F5F5F5;
+  color: #191919;
+}
+
+.breadcrumb-item button.active {
+  font-weight: 600;
+  color: #191919;
+}
+
+/* ============================================
+   Tree Structure - Flexbox + SVG Connector
+   ============================================ */
+
+.org-tree {
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 20px 40px 60px 40px;
+}
+
+/* 서브트리 컨테이너 */
+.org-subtree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 노드 카드 래퍼 */
+.org-node-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+/* 자식 노드 행 */
+.org-children-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* 개별 자식 래퍼 */
+.org-child-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ===== SVG 커넥터 ===== */
+
+.org-connector-svg {
+  width: 100%;
+  height: 40px;
+  overflow: visible;
+  flex-shrink: 0;
+}
+
+.org-connector-svg path,
+.org-connector-svg line {
+  stroke: #333333;
+  stroke-width: 1.5;
+  stroke-linecap: square;
+  fill: none;
+}
+
+/* 그리드 모드 커넥터 - 세로선 */
+.org-connector-grid {
+  height: 24px;
+  margin-bottom: -1px; /* 그리드 상단 테두리와 연결 */
+}
+
+/* C-Level 행 (CTO, CFO) */
+.org-clevel-row {
+  margin-bottom: 20px;
+}
+
+/* CEO 직속 조직 연결선 (C-Level 아래) */
+.org-division-connector {
+  width: 1.5px;
+  height: 30px;
+  background: #333333;
+  margin: 0 auto;
+}
+
+/* ============================================
+   OrgCard Component - PDF Style
+   ============================================ */
+
+.org-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid #E5E5E5;
+  min-width: 140px;
+  max-width: 180px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.org-card:hover,
+.org-card.hovered {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.org-card.highlighted {
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.org-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.org-card-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #525252;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.org-card-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #191919;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.org-card-concurrent {
+  font-size: 10px;
+  color: #8B5CF6;
+  margin-top: 4px;
+  padding: 3px 8px;
+  background: rgba(139, 92, 246, 0.1);
+  border-radius: 4px;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Card Type Variations - PDF Colors */
+
+/* 회사 - 검정 */
+.org-card-company {
+  background: #191919;
+  border-color: #191919;
+  min-width: 220px;
+  padding: 18px 32px;
+}
+
+.org-card-company .org-card-name {
+  color: #fff;
+  font-size: 22px;
+}
+
+.org-card-logo {
+  height: 28px;
+  width: auto;
+}
+
+/* C-Level - 베이지/갈색 */
+.org-card-clevel {
+  background: #D4C5A9;
+  border-color: #C9B99A;
+}
+
+.org-card-clevel .org-card-title {
+  color: #4A4535;
+}
+
+.org-card-clevel .org-card-name {
+  color: #1A1A1A;
+}
+
+/* 실(Division) - 민트/청록 */
+.org-card-division {
+  background: #B8E0D2;
+  border-color: #9DD0C0;
+}
+
+.org-card-division .org-card-title {
+  color: #2D5A4D;
+}
+
+.org-card-division .org-card-name {
+  color: #1A1A1A;
+}
+
+/* 팀(Team) - 연노랑 */
+.org-card-team {
+  background: #FFF3B0;
+  border-color: #FFE566;
+}
+
+.org-card-team .org-card-title {
+  color: #5D5200;
+}
+
+.org-card-team .org-card-name {
+  color: #1A1A1A;
+}
+
+/* 멤버 - 회색 (팀장/실장과 동일 사이즈) */
+.org-card-member {
+  background: #F5F5F5;
+  border-color: #E5E5E5;
+}
+
+.org-card-member .org-card-title {
+  color: #737373;
+}
+
+.org-card-member .org-card-name {
+  color: #1A1A1A;
+}
+
+/* ============================================
+   Members Grid (6명 이상일 때 2열 그리드)
+   ============================================ */
+
+.org-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 14px;
+  background: rgba(245, 245, 245, 0.3);
+  border-radius: 8px;
+  border-top: 1.5px solid #333333;
+  margin: 0 auto;
+  max-width: 400px;
+  position: relative;
+}
+
+/* 그리드 안의 카드 조정 */
+.org-grid .org-card {
+  min-width: auto;
+  max-width: none;
+}
+
+/* 휴직자 카드 스타일 */
+.org-card-onleave {
+  opacity: 0.55;
+}
+
+.org-card-leave-badge {
+  font-size: 10px;
+  color: #DC2626;
+  margin-top: 4px;
+  padding: 2px 8px;
+  background: rgba(220, 38, 38, 0.08);
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/* ============================================
+   SearchBar Component
+   ============================================ */
+
+.org-search {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+
+.org-search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.org-search-icon {
+  position: absolute;
+  left: 12px;
+  color: #A3A3A3;
+  pointer-events: none;
+}
+
+.org-search-input {
+  width: 100%;
+  padding: 10px 40px 10px 40px;
+  background: #fff;
+  border: 1px solid #E5E5E5;
+  border-radius: 12px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #191919;
+  transition: all 0.15s ease;
+}
+
+.org-search-input:focus {
+  outline: none;
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.org-search-input::placeholder {
+  color: #A3A3A3;
+}
+
+.org-search-clear {
+  position: absolute;
+  right: 8px;
+  padding: 4px;
+  background: none;
+  border: none;
+  color: #A3A3A3;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.org-search-clear:hover {
+  background: #F5F5F5;
+  color: #525252;
+}
+
+.org-search-results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #E5E5E5;
+  border-radius: 12px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  max-height: 400px;
+  overflow: auto;
+}
+
+.org-search-results-header {
+  padding: 12px 16px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #737373;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.org-search-results-list {
+  list-style: none;
+  padding: 0 8px 8px;
+  margin: 0;
+}
+
+.org-search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.org-search-result-item:hover {
+  background: #F5F5F5;
+}
+
+.org-search-result-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #E5E5E5;
+  color: #525252;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.org-search-result-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.org-search-result-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #191919;
+}
+
+.org-search-result-detail {
+  font-size: 12px;
+  color: #737373;
+  margin-top: 2px;
+}
+
+.org-search-result-path {
+  font-size: 11px;
+  color: #A3A3A3;
+  margin-top: 4px;
+}
+
+.org-search-no-results {
+  padding: 24px;
+  text-align: center;
+  color: #737373;
+  font-size: 14px;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+  .app-header {
+    padding: 12px 16px;
+  }
+
+  .app-main {
+    padding: 16px;
+  }
+
+  .org-chart-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .org-search {
+    max-width: 100%;
+  }
+
+  .tree-children-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .org-card {
+    min-width: 180px;
+    max-width: 220px;
+  }
+}
