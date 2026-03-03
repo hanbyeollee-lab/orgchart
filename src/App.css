@@ -387,18 +387,18 @@
   color: #1A1A1A;
 }
 
-/* 멤버 - 연보라/라벤더 */
+/* 멤버 - 은은한 파스텔 라벤더 */
 .org-card-member {
-  background: #EDE9FE;
-  border-color: #C4B5FD;
+  background: #F5F3FF;
+  border-color: #DDD6FE;
 }
 
 .org-card-member .org-card-title {
-  color: #6D28D9;
+  color: #7C7C7C;
 }
 
 .org-card-member .org-card-name {
-  color: #4C1D95;
+  color: #3D3D3D;
 }
 
 /* ============================================
