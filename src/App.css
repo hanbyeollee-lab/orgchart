@@ -387,18 +387,18 @@
   color: #1A1A1A;
 }
 
-/* 멤버 - 연두/녹색 */
+/* 멤버 - 연보라/라벤더 */
 .org-card-member {
-  background: #DCFCE7;
-  border-color: #86EFAC;
+  background: #EDE9FE;
+  border-color: #C4B5FD;
 }
 
 .org-card-member .org-card-title {
-  color: #166534;
+  color: #6D28D9;
 }
 
 .org-card-member .org-card-name {
-  color: #14532D;
+  color: #4C1D95;
 }
 
 /* ============================================
