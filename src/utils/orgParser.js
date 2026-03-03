@@ -454,7 +454,7 @@ function findLeader(members) {
 }
 
 /**
- * 검색 기능 - 이름으로만 검색
+ * 검색 기능 - 이름, 실, 팀으로 검색
  */
 export function searchPeople(node, query) {
   const results = [];
@@ -463,14 +463,25 @@ export function searchPeople(node, query) {
   function traverse(n, path = []) {
     const currentPath = [...path, { id: n.id, name: n.name, type: n.type }];
 
-    // 리더, 멤버 검색 (이름으로만)
+    // 리더, 멤버 검색 (이름으로)
     if (n.type === 'leader' || n.type === 'member') {
       if (n.name && n.name.toLowerCase().includes(lowerQuery)) {
-        results.push({ ...n, path: path });
+        results.push({ ...n, path: path, searchType: 'person' });
       }
     }
 
-    // 실/팀의 리더 이름으로 검색
+    // 실/팀 이름으로 검색 (조직 검색)
+    if ((n.type === 'division' || n.type === 'team') && n.name) {
+      if (n.name.toLowerCase().includes(lowerQuery)) {
+        results.push({
+          ...n,
+          searchType: 'org',
+          path: path
+        });
+      }
+    }
+
+    // 실/팀의 리더 이름으로 검색 (사람 검색)
     if ((n.type === 'division' || n.type === 'team') && n.leaderName) {
       if (n.leaderName.toLowerCase().includes(lowerQuery)) {
         results.push({
@@ -478,7 +489,8 @@ export function searchPeople(node, query) {
           name: n.leaderName,
           title: n.leaderTitle,
           orgName: n.name,
-          path: path
+          path: path,
+          searchType: 'person'
         });
       }
     }
@@ -489,7 +501,13 @@ export function searchPeople(node, query) {
   }
 
   traverse(node);
-  return results.sort((a, b) => getTitlePriority(b.title) - getTitlePriority(a.title));
+
+  // 조직 결과를 먼저, 그 다음 사람 결과 (직책 순)
+  return results.sort((a, b) => {
+    if (a.searchType === 'org' && b.searchType !== 'org') return -1;
+    if (a.searchType !== 'org' && b.searchType === 'org') return 1;
+    return getTitlePriority(b.title) - getTitlePriority(a.title);
+  });
 }
 
 /**

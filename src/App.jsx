@@ -1,19 +1,63 @@
 import { useState, useEffect } from 'react';
 import { OrgChart } from './components/OrgChart';
 import { buildOrgTree } from './utils/orgParser';
-import orgData from './data/orgData.json';
+import { loadCustomOrgData, saveOrgData } from './utils/dataManager';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { LoginPage } from './components/Auth';
+import { AdminPanel } from './components/Admin';
+import originalOrgData from './data/orgData.json';
 import './App.css';
 
-export default function App() {
+function AppContent() {
+  const [orgData, setOrgData] = useState(null);
   const [orgTree, setOrgTree] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showAdminPanel, setShowAdminPanel] = useState(false);
 
+  const { isAuthenticated, isAdmin, user, logout, loading: authLoading } = useAuth();
+
+  // 초기 데이터 로드
   useEffect(() => {
-    // 실제 데이터로 트리 구조 생성
-    const tree = buildOrgTree(orgData);
+    const customData = loadCustomOrgData();
+    const dataToUse = customData || originalOrgData;
+    setOrgData(dataToUse);
+
+    const tree = buildOrgTree(dataToUse);
     setOrgTree(tree);
     setLoading(false);
   }, []);
+
+  // 데이터 변경 시 트리 재생성
+  const handleDataChange = (newData) => {
+    if (newData === null) {
+      // 원본 복원
+      setOrgData(originalOrgData);
+      const tree = buildOrgTree(originalOrgData);
+      setOrgTree(tree);
+    } else {
+      setOrgData(newData);
+      saveOrgData(newData);
+      const tree = buildOrgTree(newData);
+      setOrgTree(tree);
+    }
+  };
+
+  // 인증 로딩 중
+  if (authLoading) {
+    return (
+      <div className="app-container">
+        <div className="loading-state" style={{ height: '100vh' }}>
+          <div className="loading-spinner" />
+          <p>인증 확인 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 인증되지 않은 경우 로그인 페이지 표시
+  if (!isAuthenticated) {
+    return <LoginPage />;
+  }
 
   return (
     <div className="app-container">
@@ -23,6 +67,23 @@ export default function App() {
           <img src="/logo-white.png" alt="마이리얼트립" className="header-logo" />
         </div>
         <div className="header-right">
+          {isAdmin && (
+            <button
+              className="admin-header-btn"
+              onClick={() => setShowAdminPanel(true)}
+            >
+              관리자
+            </button>
+          )}
+          <div className="header-user">
+            {user?.picture && (
+              <img src={user.picture} alt="" className="header-user-avatar" />
+            )}
+            <span className="header-user-name">{user?.name || user?.email}</span>
+            <button className="header-logout-btn" onClick={logout}>
+              로그아웃
+            </button>
+          </div>
           <span className="internal-badge">For Internal Use Only</span>
         </div>
       </header>
@@ -47,6 +108,23 @@ export default function App() {
       <footer className="app-footer">
         © 2026 MyRealTrip — 내부 전용
       </footer>
+
+      {/* 관리자 패널 */}
+      {showAdminPanel && isAdmin && orgData && (
+        <AdminPanel
+          orgData={orgData}
+          onDataChange={handleDataChange}
+          onClose={() => setShowAdminPanel(false)}
+        />
+      )}
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }

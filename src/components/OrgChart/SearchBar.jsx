@@ -8,7 +8,7 @@ export default function SearchBar({
   onSearch,
   results = [],
   onResultClick,
-  placeholder = '이름으로 검색...'
+  placeholder = '이름, 실, 팀으로 검색...'
 }) {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
@@ -157,7 +157,7 @@ export default function SearchBar({
           {results.length > 0 ? (
             <>
               <div className="org-search-results-header">
-                검색 결과 ({results.length}명)
+                검색 결과 ({results.length}건)
               </div>
               <ul className="org-search-results-list">
                 {results.map((result, index) => (
@@ -168,17 +168,37 @@ export default function SearchBar({
                     role="option"
                     aria-selected={index === selectedIndex}
                   >
-                    <div className="org-search-result-avatar">
-                      {result.name.charAt(0)}
-                    </div>
+                    {result.searchType === 'org' ? (
+                      <div className="org-search-result-avatar org-search-result-avatar-org">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                      </div>
+                    ) : (
+                      <div className="org-search-result-avatar">
+                        {result.name.charAt(0)}
+                      </div>
+                    )}
                     <div className="org-search-result-info">
                       <div className="org-search-result-name">
                         {highlightMatch(result.name, query)}
+                        {result.searchType === 'org' && (
+                          <span className="org-search-result-type-badge">
+                            {result.type === 'division' ? '실' : '팀'}
+                          </span>
+                        )}
                       </div>
                       <div className="org-search-result-detail">
-                        {result.title && <span>{highlightMatch(result.title, query)}</span>}
-                        {result.title && result.jobTitle && ' · '}
-                        {result.jobTitle && <span>{highlightMatch(result.jobTitle, query)}</span>}
+                        {result.searchType === 'org' ? (
+                          result.leaderName && <span>리더: {result.leaderName}</span>
+                        ) : (
+                          <>
+                            {result.title && <span>{highlightMatch(result.title, query)}</span>}
+                            {result.title && result.jobTitle && ' · '}
+                            {result.jobTitle && <span>{highlightMatch(result.jobTitle, query)}</span>}
+                          </>
+                        )}
                       </div>
                       {result.path && result.path.length > 0 && (
                         <div className="org-search-result-path">
