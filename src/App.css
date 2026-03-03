@@ -387,18 +387,18 @@
   color: #1A1A1A;
 }
 
-/* 멤버 - 회색 (팀장/실장과 동일 사이즈) */
+/* 멤버 - 연두/녹색 */
 .org-card-member {
-  background: #F5F5F5;
-  border-color: #E5E5E5;
+  background: #DCFCE7;
+  border-color: #86EFAC;
 }
 
 .org-card-member .org-card-title {
-  color: #737373;
+  color: #166534;
 }
 
 .org-card-member .org-card-name {
-  color: #1A1A1A;
+  color: #14532D;
 }
 
 /* ============================================
